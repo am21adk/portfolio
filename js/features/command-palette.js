@@ -8,10 +8,10 @@ import { showToast } from "../lib/toast.js";
 
 function buildActions() {
   const actions = [
-    { label: "Go to Home", run: () => (location.href = "/") },
-    { label: "Go to Projects", run: () => (location.href = "/projects") },
-    { label: "Go to About", run: () => (location.href = "/about") },
-    { label: "Go to Contact", run: () => (location.href = "/contact") },
+    { label: "Go to Home", run: () => (location.href = "index.html") },
+    { label: "Go to Projects", run: () => (location.href = "projects.html") },
+    { label: "Go to About", run: () => (location.href = "about.html") },
+    { label: "Go to Contact", run: () => (location.href = "contact.html") },
     {
       label: "Copy email address",
       run: async () => {
@@ -19,7 +19,7 @@ function buildActions() {
         showToast("Copied email to clipboard");
       },
     },
-    { label: "Download CV", run: () => window.open("/assets/cv.pdf", "_blank", "noopener,noreferrer") },
+    { label: "Download CV", run: () => window.open("assets/cv.pdf", "_blank", "noopener,noreferrer") },
     {
       label: "Open terminal",
       run: () => document.querySelector("[data-open-terminal]")?.click(),

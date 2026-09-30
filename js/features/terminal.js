@@ -19,7 +19,7 @@ import {
 import { sha256Hex } from "../lib/hash.js";
 import { closestMatch } from "../lib/levenshtein.js";
 
-const PAGES = { home: "/", about: "/about", projects: "/projects", contact: "/contact" };
+const PAGES = { home: "index.html", about: "about.html", projects: "projects.html", contact: "contact.html" };
 const COMMANDS = [
   "help", "whoami", "ls", "cd", "about", "projects", "open", "experience",
   "skills", "education", "certs", "contact", "socials", "cv", "hash",
@@ -172,7 +172,7 @@ export function init() {
     contact: () => formatContact(),
     socials: () => formatContact(),
     cv: () => {
-      window.open("/assets/cv.pdf", "_blank", "noopener,noreferrer");
+      window.open("assets/cv.pdf", "_blank", "noopener,noreferrer");
       return "Opening CV…";
     },
     hash: async (args) => {

@@ -24,7 +24,7 @@ export function renderHeroSocials(container) {
     (s) => `<a href="${s.url}" target="_blank" rel="noopener noreferrer">${iconSVG(s.icon)}<span class="visually-hidden">${s.name}</span></a>`
   ).join("");
   const emailLink = document.createElement("a");
-  emailLink.href = "/contact";
+  emailLink.href = "contact.html";
   emailLink.innerHTML = `${iconSVG("email")}<span class="visually-hidden">Email</span>`;
   container.append(emailLink);
 }
@@ -65,7 +65,7 @@ export function renderFeaturedLinks(container) {
   container.innerHTML = FEATURED_PROJECTS.map(
     (p) => `
     <li>
-      <a class="project-card color-${p.color}" href="/projects#${p.id}" data-card-id="${p.id}" data-reveal>
+      <a class="project-card color-${p.color}" href="projects.html#${p.id}" data-card-id="${p.id}" data-reveal>
         ${cardInnerHTML(p)}
       </a>
     </li>`

@@ -75,10 +75,10 @@
 .nav-links a:hover { color: var(--color-fg); }
 
 /* Current-page highlight, driven purely by the body attribute. */
-body[data-page="home"] .nav-links a[href="/"],
-body[data-page="projects"] .nav-links a[href="/projects"],
-body[data-page="about"] .nav-links a[href="/about"],
-body[data-page="contact"] .nav-links a[href="/contact"] {
+body[data-page="home"] .nav-links a[href="index.html"],
+body[data-page="projects"] .nav-links a[href="projects.html"],
+body[data-page="about"] .nav-links a[href="about.html"],
+body[data-page="contact"] .nav-links a[href="contact.html"] {
   color: var(--color-fg);
 }
 

@@ -72,7 +72,11 @@ renderContactSocials(document.querySelector("[data-contact-socials]"));
 
 // A card linked from Home (/projects#absoc-website) should land already
 // expanded, not just scrolled to.
-const targetDetails = location.hash && document.querySelector(`details${CSS.escape(location.hash)}`);
+// location.hash already includes its leading "#", which is exactly the ID
+// selector syntax needed here — CSS.escape would instead escape that "#"
+// into a literal character and break the selector, since our project ids
+// are plain kebab-case with nothing that actually needs escaping.
+const targetDetails = location.hash && document.querySelector(`details${location.hash}`);
 if (targetDetails) targetDetails.open = true;
 
 // Content-driven features (need the DOM the render calls above just built).

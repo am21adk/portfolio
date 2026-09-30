@@ -6,7 +6,7 @@
 // matching array/object below. Nothing in css/ or js/ needs to change —
 // every page reads from here at load time via <script type="module">.
 //
-// Image paths are relative to the site root (e.g. "/assets/portrait.webp").
+// Image paths are relative to the site root (e.g. "assets/portrait.webp").
 // ============================================================================
 
 export const PERSON = {
@@ -15,8 +15,8 @@ export const PERSON = {
   titles: ["Programmer", "Mobile Developer", "Cyber Security MSc"],
   bio: "I build web and mobile products for real communities, from a national platform for 45+ university societies to the app their members carry in their pocket. First-class BSc Computer Science and MSc Cyber Security, University of Hertfordshire.",
   location: "London, UK",
-  portrait: "/assets/portrait.webp",
-  cv: "/assets/cv.pdf",
+  portrait: "assets/portrait.webp",
+  cv: "assets/cv.pdf",
 };
 
 // Contact details are deliberately NOT stored as plain strings — see
@@ -70,9 +70,9 @@ export const FEATURED_PROJECTS = [
       "The Find Your ABSoc directory",
       "A shop with Stripe checkout",
     ],
-    logo: "/assets/projects/absoc-website/logo.webp",
+    logo: "assets/projects/absoc-website/logo.webp",
     images: [
-      { src: "/assets/projects/absoc-website/logo.webp", alt: "The Muslim Student Council (MSC) mark", width: 256, height: 109 },
+      { src: "assets/projects/absoc-website/logo.webp", alt: "The Muslim Student Council (MSC) mark", width: 256, height: 109 },
     ],
     cta: { label: "Visit site", url: "https://www.absoc.uk" },
   },
@@ -93,10 +93,10 @@ export const FEATURED_PROJECTS = [
       "Membership and joining, with a Stripe-billed monthly subscription",
       "Club news and a photo gallery",
     ],
-    logo: "/assets/projects/badr-grappling/logo.webp",
+    logo: "assets/projects/badr-grappling/logo.webp",
     images: [
-      { src: "/assets/projects/badr-grappling/screenshot-2.webp", alt: "The Badr Grappling squad with their club banner", width: 640, height: 480 },
-      { src: "/assets/projects/badr-grappling/screenshot-1.webp", alt: "The team training on the mats", width: 640, height: 446 },
+      { src: "assets/projects/badr-grappling/screenshot-2.webp", alt: "The Badr Grappling squad with their club banner", width: 640, height: 480 },
+      { src: "assets/projects/badr-grappling/screenshot-1.webp", alt: "The team training on the mats", width: 640, height: 446 },
     ],
     cta: { label: "Visit site", url: "https://www.badrgrappling.co.uk" },
   },
@@ -119,11 +119,11 @@ export const FEATURED_PROJECTS = [
       "Member directory and society discovery",
       "Companion Admin app: door check-in, stamp awarding, event publishing",
     ],
-    logo: "/assets/projects/absoc-app/logo.webp",
+    logo: "assets/projects/absoc-app/logo.webp",
     images: [
-      { src: "/assets/projects/absoc-app/screenshot-passport.webp", alt: "The ABSoc event passport, showing stamps and a member ID card", width: 640, height: 1387 },
-      { src: "/assets/projects/absoc-app/screenshot-calendar.webp", alt: "The shared national events calendar", width: 640, height: 1387 },
-      { src: "/assets/projects/absoc-app/screenshot-admin.webp", alt: "The ABSoc Admin check-in book", width: 640, height: 1387 },
+      { src: "assets/projects/absoc-app/screenshot-passport.webp", alt: "The ABSoc event passport, showing stamps and a member ID card", width: 640, height: 1387 },
+      { src: "assets/projects/absoc-app/screenshot-calendar.webp", alt: "The shared national events calendar", width: 640, height: 1387 },
+      { src: "assets/projects/absoc-app/screenshot-admin.webp", alt: "The ABSoc Admin check-in book", width: 640, height: 1387 },
     ],
     cta: { label: "App Store", url: "https://apps.apple.com/gb/app/absoc/id6800276723" },
   },
