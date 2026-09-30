@@ -1,0 +1,94 @@
+/* Reset, base typography, and the a11y utility classes used across every
+   page (skip link, visually-hidden, focus rings). */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, picture, svg, video, canvas { display: block; max-width: 100%; }
+input, button, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; padding: 0; }
+
+h1, h2, h3, h4 { font-weight: 500; line-height: 1.1; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Respect the OS-level reduced-motion preference everywhere by default;
+   individual features re-check the media query in JS before starting any
+   rAF-driven animation, but this catches every CSS transition/animation. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  z-index: 1000;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transform: translateY(-150%);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* One visible focus style, used on every focusable element site-wide.
+   :focus-visible so mouse clicks don't show it, only keyboard/AT focus. */
+:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+}
+
+/* Custom cursor (feature 14) hides the native one on capable desktop
+   pointers only; js/features/cursor.js adds this class after confirming
+   a fine pointer and no touch support. */
+html.has-custom-cursor,
+html.has-custom-cursor a,
+html.has-custom-cursor button {
+  cursor: none;
+}

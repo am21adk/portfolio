@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Amir Mashallah Ali</title>
+  <meta name="description" content="Get in touch with Amir Mashallah Ali — email, phone, LinkedIn, GitHub, Instagram, or send a message directly.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact — Amir Mashallah Ali">
+  <meta property="og:description" content="Let's build something. Get in touch by email, phone, or social.">
+  <meta property="og:image" content="https://amirmashallahali.dev/assets/og-image.jpg">
+  <meta property="og:url" content="https://amirmashallahali.dev/contact">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://amirmashallahali.dev/contact">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&f[]=satoshi@400,500,700,900&display=optional">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body data-page="contact">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header container">
+    <a class="nav-monogram" href="/" aria-label="AMA — Home">
+      <svg viewBox="0 0 100 34" role="img" aria-hidden="true" focusable="false"><text x="0" y="27">AMA</text></svg>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="nav-terminal-toggle" data-open-terminal aria-label="Open terminal (or press the backtick key)">&gt;_</button>
+      <a class="btn-outline" href="/assets/cv.pdf" download>Resume ↓</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container contact-hero">
+      <h1 data-decrypt>Let's build something.</h1>
+
+      <div class="contact-details">
+        <div class="contact-detail-row">
+          <button type="button" class="contact-cipher" data-reveal-secret="email"><span data-glyphs aria-hidden="true"></span></button>
+          <button type="button" class="copy-btn" data-copy-secret="email" aria-label="Copy email address">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M9 3h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-1v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h1V5a2 2 0 0 1 2-2zm0 4H6v9h9v-1H9V7zm2-2v8h9V5h-9z"/></svg>
+          </button>
+        </div>
+        <div class="contact-detail-row">
+          <button type="button" class="contact-cipher" data-reveal-secret="phone"><span data-glyphs aria-hidden="true"></span></button>
+          <button type="button" class="copy-btn" data-copy-secret="phone" aria-label="Copy phone number">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M9 3h9a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-1v1a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h1V5a2 2 0 0 1 2-2zm0 4H6v9h9v-1H9V7zm2-2v8h9V5h-9z"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="social-heading">
+      <h2 class="visually-hidden" id="social-heading">Social links</h2>
+      <nav class="contact-social-links" data-contact-socials aria-label="Social links"></nav>
+    </section>
+
+    <section class="container" aria-labelledby="message-heading">
+      <h2 class="section-heading" id="message-heading" data-decrypt>Send a message</h2>
+      <form data-composer-form novalidate>
+        <div class="field">
+          <label for="composer-name">Name</label>
+          <input id="composer-name" name="name" type="text" required autocomplete="name">
+          <p class="field-error" id="composer-name-error" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="composer-subject">Subject</label>
+          <input id="composer-subject" name="subject" type="text" required>
+          <p class="field-error" id="composer-subject-error" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="composer-message">Message</label>
+          <textarea id="composer-message" name="message" rows="6" required></textarea>
+          <p class="field-error" id="composer-message-error" role="alert"></p>
+        </div>
+        <button type="submit" class="btn-solid">Open in email →</button>
+      </form>
+    </section>
+
+    <section class="container closing-band">
+      <a class="btn-outline" href="/assets/cv.pdf" download>Download CV ↓</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <p>© <span data-copyright-year></span> Amir Mashallah Ali</p>
+      <p class="footer-clock" data-london-clock>London — --:--</p>
+      <button type="button" class="footer-headers-link" data-open-headers-panel>Security headers: A+</button>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+  <div class="terminal-overlay" data-terminal role="dialog" aria-modal="true" aria-label="Terminal" hidden></div>
+  <div class="command-palette-backdrop" data-command-palette hidden></div>
+  <div class="headers-panel" data-headers-panel hidden></div>
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

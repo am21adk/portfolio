@@ -1,0 +1,6 @@
+# Design reference frames used while building — not part of the site
+reference/
+
+# OS junk
+.DS_Store
+Thumbs.db

@@ -1,0 +1,877 @@
+/* ---------- Hero ---------------------------------------------------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  min-height: 88vh;
+  gap: var(--space-8);
+  padding-block: 0 !important;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+  padding-inline: var(--container-pad);
+}
+
+.hero-name {
+  font-size: var(--fs-hero-name);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.hero-title {
+  font-size: var(--fs-hero-title);
+  font-weight: 300;
+  color: var(--color-fg);
+  min-height: 1.3em;
+}
+.hero-title .cursor-blink {
+  display: inline-block;
+  width: 0.09em;
+  margin-left: 0.1em;
+  border-left: 2px solid var(--color-fg);
+  animation: blink 1s step-end infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-title .cursor-blink { animation: none; }
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-bio {
+  max-width: 46ch;
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+}
+
+.hero-socials {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.hero-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-muted);
+  transition: color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+}
+.hero-socials a:hover { color: var(--color-fg); border-color: var(--color-fg); }
+.hero-socials svg { width: 16px; height: 16px; }
+
+.hero-portrait-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.hero-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 0%;
+  /* High-contrast B&W, whatever the source photo looks like. Background
+     already removed (assets/portrait.png is a transparent cutout), so the
+     wrapper's own black background shows straight through — no gradient
+     needed on the top/right/bottom edges, only the deliberate left fade. */
+  filter: grayscale(1) contrast(1.35) brightness(0.95);
+}
+.hero-portrait-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--color-bg) 0%, transparent 18%);
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .hero-portrait-wrap { height: 60vh; order: -1; }
+  .hero-content { padding-block: var(--space-16) var(--space-8); }
+}
+
+/* ---------- Reveal (armed by features/reveal-on-scroll.js in the motion
+   pass — that module adds html.reveal-armed itself once it's actually
+   watching elements, so nothing goes invisible before it exists) -------- */
+
+[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+html.reveal-armed [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+}
+html.reveal-armed [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Featured project cards ----------------------------------- */
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+  /* Empty until JS renders the 3 featured cards from FEATURED_PROJECTS —
+     see the .git-log comment for why that needs a size reservation. */
+  min-height: 420px;
+}
+@media (max-width: 900px) {
+  .featured-grid { grid-template-columns: 1fr; min-height: 1100px; }
+}
+
+.project-card {
+  --card-fg: var(--color-fg);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: var(--card-color);
+  color: var(--card-fg);
+  text-align: left;
+  /* transform is NOT transitioned here — tilt-cards.js drives it every
+     animation frame via a spring; a CSS transition on the same property
+     would fight the rAF updates and make the tilt feel laggy. */
+  transition: box-shadow var(--duration-fast) var(--ease-out);
+}
+.project-card.color-blue { --card-color: var(--color-blue); }
+.project-card.color-yellow { --card-color: var(--color-yellow); --card-fg: #000; }
+.project-card.color-pink { --card-color: var(--color-pink); }
+
+.project-card:hover, .project-card:focus-within {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Tilt + glare (feature 11) — perspective set on the grid, transform
+   applied per-card by tilt-cards.js. The glare is a radial gradient that
+   follows the pointer via --glare-x/--glare-y, set through the CSSOM
+   (not a style="" attribute) so it works under a strict style-src CSP. */
+.featured-grid { perspective: 1200px; }
+.project-card {
+  --glare-x: 50%;
+  --glare-y: 50%;
+  will-change: transform;
+}
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 255, 255, 0.28), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  pointer-events: none;
+}
+.project-card.is-tilting::after { opacity: 1; }
+
+.project-card-image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.project-card-image img { width: 60%; height: 60%; object-fit: contain; }
+
+.project-card-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.project-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--fs-small);
+  opacity: 0.85;
+}
+
+.project-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-micro);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-dot.is-live { color: #3ddc71; }
+.status-dot.is-down { color: var(--color-red); }
+@media (prefers-reduced-motion: no-preference) {
+  .status-dot.is-live { animation: pulse 1.8s ease-in-out infinite; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.store-badges { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.store-badge {
+  font-size: var(--fs-micro);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  opacity: 0.85;
+}
+
+/* Projects page cards are native <details>/<summary> — expandable with no
+   JS, keyboard accessible for free. Home's cards are plain <a>s. */
+details.project-card { padding: 0; overflow: hidden; }
+details.project-card > summary {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  cursor: pointer;
+  list-style: none;
+}
+details.project-card > summary::-webkit-details-marker { display: none; }
+details.project-card[open] { grid-column: 1 / -1; }
+.project-card-expanded {
+  padding: 0 var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.project-card-expanded ul { display: flex; flex-direction: column; gap: var(--space-1); }
+.project-card-expanded li { padding-left: var(--space-4); position: relative; }
+.project-card-expanded li::before { content: "—"; position: absolute; left: 0; }
+.project-card-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}
+.project-card-gallery img { border-radius: var(--radius-sm); width: 100%; height: auto; }
+.project-card-cta { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+.project-card-cta .btn-solid { background: #000; color: #fff; }
+.color-yellow .project-card-cta .btn-solid { background: #000; color: #fff; }
+
+.featured-work-footer {
+  margin-top: var(--space-8);
+  text-align: right;
+}
+.link-arrow {
+  border-bottom: 1px solid transparent;
+}
+.link-arrow:hover { border-bottom-color: currentColor; }
+
+/* ---------- Stats strip ------------------------------------------------ */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-6);
+}
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.stat-value {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+}
+
+/* ---------- Closing band ------------------------------------------------ */
+
+.closing-band {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+.closing-band h2 { font-size: var(--fs-h1); }
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-8);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.btn-solid:hover, .btn-solid:focus-visible { opacity: 0.8; }
+
+/* ---------- AboutMe.js editor ------------------------------------------ */
+
+.editor {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+  background: #050505;
+}
+.editor-tabbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-editor-chrome);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+}
+.editor-badge-js {
+  background: var(--color-yellow);
+  color: #000;
+  font-weight: 700;
+  font-size: var(--fs-micro);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.editor-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-fg);
+}
+.editor-tab-close { color: var(--color-fg-muted); }
+
+.editor-body {
+  display: flex;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  padding-block: var(--space-4);
+  /* about-editor.js builds this from an empty <ol>, either typing it in
+     line by line or (reduced motion) filling it in one go — either way
+     it starts empty in the static HTML. Reserve roughly ABOUT_ME_CODE's
+     14 lines' worth of height so that doesn't register as a layout shift
+     (see the identical reasoning on .git-log, which taught this the
+     expensive way). */
+  min-height: 380px;
+}
+.editor-gutter {
+  flex: none;
+  padding-inline: var(--space-4);
+  border-right: 1px solid var(--color-border-subtle);
+  color: var(--color-fg-muted);
+  text-align: right;
+  user-select: none;
+}
+.editor-code {
+  flex: 1;
+  padding-inline: var(--space-4);
+  overflow-x: auto;
+  white-space: pre;
+}
+.editor-line { min-height: 1.7em; }
+.tok-keyword { color: var(--syntax-keyword); }
+.tok-string { color: var(--syntax-string); }
+.tok-value { color: var(--syntax-value); }
+.tok-comment { color: var(--syntax-comment); }
+.tok-punct { color: var(--syntax-punct); }
+.tok-property { color: #9cdcfe; }
+
+.editor-run-row {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+.editor-run-btn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  color: var(--color-fg);
+}
+.editor-run-btn:hover { border-color: var(--color-fg); }
+
+.editor-output {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: #000;
+  border-top: 1px solid var(--color-border-subtle);
+  padding: var(--space-4);
+  white-space: pre-wrap;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-base) var(--ease-out);
+}
+.editor-output.is-open { max-height: 480px; }
+
+/* ---------- Experience git log ----------------------------------------- */
+
+.git-log {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-left: var(--space-8);
+  /* This list is built by JS from data/content.js and starts life as an
+     empty <ol> in the static HTML — by the time main.js has fetched,
+     parsed and populated it, the browser has typically already painted
+     that empty state once. Without a size reservation, six commits'
+     worth of content then pops in as one large, measured layout shift.
+     min-height is a rough reservation, not a promise: it costs nothing
+     if EXPERIENCE grows past it (the list just grows normally), and it
+     only needs to shrink today's pop-in, not eliminate it outright. */
+  min-height: 420px;
+}
+.git-log::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--color-border-subtle);
+}
+.git-commit { position: relative; }
+.git-commit::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--space-8) * -1 + 1px);
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 2px solid var(--color-fg);
+}
+.git-commit.branch-who-is-hussain {
+  margin-left: var(--space-8);
+}
+.git-commit-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  padding: var(--space-2) 0;
+}
+.git-hash { color: var(--color-fg-muted); }
+.git-tag {
+  font-size: var(--fs-micro);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  border: 1px solid currentColor;
+}
+.git-tag.tag-leadership { color: var(--color-blue); }
+.git-tag.tag-volunteering { color: var(--color-pink); }
+.git-year { color: var(--color-fg-muted); font-size: var(--fs-micro); }
+.git-message { font-family: var(--font-sans); }
+.git-commit-body {
+  max-height: 0;
+  overflow: hidden;
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+  transition: max-height var(--duration-base) var(--ease-out);
+}
+.git-commit.is-expanded .git-commit-body { max-height: 200px; padding-top: var(--space-2); }
+
+/* ---------- Skills marquee ---------------------------------------------- */
+
+.skills-heading { text-align: center; margin-bottom: var(--space-16); }
+.skills-heading .eyebrow { margin-top: var(--space-2); }
+
+.marquee-row {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  margin-block: var(--space-4);
+}
+.marquee-track {
+  display: flex;
+  gap: var(--space-3);
+  width: max-content;
+  animation: marquee-left 32s linear infinite;
+}
+.marquee-row.reverse .marquee-track { animation-name: marquee-right; }
+.marquee-row:hover .marquee-track,
+.marquee-track.is-paused { animation-play-state: paused; }
+@keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-fg);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.skills-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.physics-stage {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  transition: height var(--duration-base) var(--ease-out);
+}
+.physics-stage.is-active { height: 320px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); margin-top: var(--space-8); }
+
+/* ---------- Archive / filter grid --------------------------------------- */
+
+.archive-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+  /* Starts empty until JS renders the pills from ARCHIVE_FILTERS, then the
+     8 pills wrap onto several lines on a narrow viewport — reserve roughly
+     that much so the wrap doesn't itself register as a layout shift. */
+  min-height: 40px;
+}
+@media (max-width: 700px) {
+  .archive-controls { min-height: 150px; }
+}
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.filter-pill {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-small);
+  color: var(--color-fg-muted);
+  background: transparent;
+}
+.filter-pill:hover { border-color: var(--color-fg); color: var(--color-fg); }
+.filter-pill[aria-pressed="true"] {
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border-color: var(--color-fg);
+}
+.archive-count {
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  /* Same reasoning as .git-log above — the JS-rendered tiles popping into
+     an empty grid is a large layout shift without a size reservation.
+     Needs a taller reservation per breakpoint since fewer columns means
+     more rows for the same tile count. */
+  min-height: 550px;
+}
+@media (max-width: 900px) {
+  .archive-grid { grid-template-columns: repeat(2, 1fr); min-height: 1150px; }
+}
+@media (max-width: 480px) {
+  .archive-grid { grid-template-columns: 1fr; min-height: 2300px; }
+}
+
+.archive-tile {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.archive-tile-name { font-weight: 600; }
+.archive-tile-summary { color: var(--color-fg-muted); font-size: var(--fs-small); }
+.archive-tile-tags { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.archive-tile-tag { font-size: var(--fs-micro); color: var(--color-fg-muted); }
+.archive-tile[hidden] { display: none; }
+
+/* ---------- Education ---------------------------------------------------- */
+
+.education-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8) var(--space-16);
+  min-height: 220px;
+}
+@media (max-width: 700px) { .education-columns { grid-template-columns: 1fr; } }
+.education-item { padding-bottom: var(--space-4); }
+.education-item + .education-item { border-top: 1px solid var(--color-border-subtle); padding-top: var(--space-4); }
+.education-qualification { font-weight: 600; }
+.education-institution { color: var(--color-fg-muted); font-size: var(--fs-small); }
+.education-electives { color: var(--color-fg-muted); font-size: var(--fs-small); margin-top: var(--space-2); }
+
+/* ---------- Contact page -------------------------------------------------- */
+
+.contact-hero { text-align: left; }
+.contact-hero h1 { font-size: var(--fs-hero-name); text-transform: uppercase; }
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+.contact-detail-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+}
+.contact-cipher {
+  cursor: pointer;
+}
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-muted);
+}
+.copy-btn:hover { color: var(--color-fg); border-color: var(--color-fg); }
+
+.contact-social-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-12);
+}
+.contact-social-links a {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: inline-flex;
+  justify-content: space-between;
+}
+.contact-social-links a:hover { border-color: var(--color-fg); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.field label { font-size: var(--fs-small); color: var(--color-fg-muted); }
+.field input, .field textarea {
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-fg);
+}
+.field input:focus, .field textarea:focus { border-color: var(--color-fg); }
+.field-error {
+  color: var(--color-pink);
+  font-size: var(--fs-micro);
+  min-height: 1em;
+}
+
+/* ---------- Toast ---------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  bottom: var(--space-8);
+  left: 50%;
+  transform: translate(-50%, 0);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+  z-index: 80;
+}
+.toast.is-visible { opacity: 1; transform: translate(-50%, -8px); }
+
+/* ---------- Terminal overlay ------------------------------------------------ */
+
+.terminal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-8);
+  font-family: var(--font-mono);
+}
+.terminal-overlay[hidden] { display: none; }
+.terminal-log {
+  flex: 1;
+  overflow-y: auto;
+  font-size: var(--fs-small);
+  white-space: pre-wrap;
+  margin-bottom: var(--space-4);
+}
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: var(--space-4);
+}
+.terminal-input-row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+}
+.terminal-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.terminal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-fg-muted);
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-4);
+}
+.terminal-close-btn {
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-fg-muted);
+  width: 28px;
+  height: 28px;
+}
+.terminal-close-btn:hover { color: var(--color-fg); border-color: var(--color-fg); }
+.terminal-line { white-space: pre-wrap; }
+.terminal-line.is-echo { color: var(--color-fg-muted); }
+.terminal-line.is-echo::before { content: "amir@portfolio:~$ "; }
+
+/* ---------- Command palette -------------------------------------------------- */
+
+.command-palette-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+}
+.command-palette-backdrop[hidden] { display: none; }
+.command-palette {
+  width: min(560px, 90vw);
+  background: #0a0a0a;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.command-palette-input {
+  width: 100%;
+  padding: var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-fg);
+  font-size: 1rem;
+}
+.command-palette-list { max-height: 320px; overflow-y: auto; }
+.command-palette-item {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--fs-small);
+  color: var(--color-fg-muted);
+  display: flex;
+  justify-content: space-between;
+}
+.command-palette-item[aria-selected="true"] { background: rgba(255, 255, 255, 0.08); color: var(--color-fg); }
+
+/* ---------- Custom cursor ----------------------------------------------------- */
+
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 999;
+  border-radius: 50%;
+  mix-blend-mode: difference;
+}
+.cursor-dot { width: 6px; height: 6px; background: #fff; }
+.cursor-ring {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #fff;
+  transition: width 180ms var(--ease-out), height 180ms var(--ease-out);
+}
+.cursor-ring.is-hovering { width: 56px; height: 56px; }
+
+.btn-solid, .btn-outline { transition: transform 150ms var(--ease-out), opacity var(--duration-fast) var(--ease-out), background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out); }
+
+/* ---------- Security headers panel -------------------------------------------- */
+
+.headers-panel {
+  position: fixed;
+  bottom: var(--space-8);
+  right: var(--space-8);
+  width: min(360px, calc(100vw - 2 * var(--space-8)));
+  background: #0a0a0a;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  z-index: 70;
+}
+.headers-panel[hidden] { display: none; }
+.headers-panel dl { display: grid; grid-template-columns: auto 1fr; gap: var(--space-1) var(--space-4); margin-top: var(--space-2); }
+.headers-panel dt { color: var(--color-fg-muted); }
+
+/* ---------- 404 -------------------------------------------------------------- */
+
+.error-terminal {
+  font-family: var(--font-mono);
+  max-width: 60ch;
+  padding-block: var(--space-32) !important;
+}
+.error-terminal .prompt::before { content: "amir@portfolio:~$ "; color: var(--color-fg-muted); }
+.error-terminal p + p { margin-top: var(--space-2); }
+.error-terminal .link-arrow { display: inline-block; margin-top: var(--space-6); }

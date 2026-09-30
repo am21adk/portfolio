@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amir Mashallah Ali — Programmer</title>
+  <meta name="description" content="Amir Mashallah Ali is a programmer and mobile developer in London — a national platform for 45+ university societies, the member app that goes with it, and an MSc in Cyber Security.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Amir Mashallah Ali — Programmer">
+  <meta property="og:description" content="Web and mobile products for real communities. First-class BSc Computer Science and MSc Cyber Security, University of Hertfordshire.">
+  <meta property="og:image" content="https://amirmashallahali.dev/assets/og-image.jpg">
+  <meta property="og:url" content="https://amirmashallahali.dev/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://amirmashallahali.dev/">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&f[]=satoshi@400,500,700,900&display=optional">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header container">
+    <a class="nav-monogram" href="/" aria-label="AMA — Home">
+      <svg viewBox="0 0 100 34" role="img" aria-hidden="true" focusable="false"><text x="0" y="27">AMA</text></svg>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="nav-terminal-toggle" data-open-terminal aria-label="Open terminal (or press the backtick key)">&gt;_</button>
+      <a class="btn-outline" href="/assets/cv.pdf" download>Resume ↓</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-name">Amir Mashallah Ali</h1>
+        <p class="hero-title" data-hero-title>Programmer<span class="cursor-blink" aria-hidden="true"></span></p>
+        <p class="hero-bio" data-hero-bio></p>
+        <div class="hero-socials" data-hero-socials aria-label="Social links"></div>
+      </div>
+      <div class="hero-portrait-wrap">
+        <img class="hero-portrait" src="/assets/portrait.webp" alt="Portrait of Amir Mashallah Ali" width="794" height="1265" fetchpriority="high">
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="featured-heading">
+      <div class="section-heading-row">
+        <h2 class="section-heading" id="featured-heading" data-decrypt>Featured work</h2>
+      </div>
+      <ul class="featured-grid" data-featured-links></ul>
+      <p class="featured-work-footer"><a class="link-arrow" href="/projects">All projects →</a></p>
+    </section>
+
+    <section class="container" aria-labelledby="stats-heading">
+      <h2 class="visually-hidden" id="stats-heading">Stats</h2>
+      <div class="stats-grid" data-stats></div>
+    </section>
+
+    <section class="container closing-band" aria-labelledby="closing-heading">
+      <h2 id="closing-heading" data-decrypt>Let's build something.</h2>
+      <a class="btn-solid" href="/contact">Get in touch</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <p>© <span data-copyright-year></span> Amir Mashallah Ali</p>
+      <p class="footer-clock" data-london-clock>London — --:--</p>
+      <button type="button" class="footer-headers-link" data-open-headers-panel>Security headers: A+</button>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+  <div class="terminal-overlay" data-terminal role="dialog" aria-modal="true" aria-label="Terminal" hidden></div>
+  <div class="command-palette-backdrop" data-command-palette hidden></div>
+  <div class="headers-panel" data-headers-panel hidden></div>
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

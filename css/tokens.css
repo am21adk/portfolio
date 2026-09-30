@@ -1,0 +1,74 @@
+/* Design tokens. Every colour, font and timing value used anywhere in the
+   site is declared here once — components reference the custom property,
+   never the raw value, so the palette can change in one place. */
+
+:root {
+  /* Colour */
+  --color-bg: #000000;
+  --color-fg: #ffffff;
+  --color-fg-muted: #8a8a8a;
+  --color-border: #ffffff;
+  --color-border-subtle: rgba(255, 255, 255, 0.16);
+
+  --color-blue: #0a50f0;
+  --color-yellow: #f9fa08;
+  --color-pink: #ec1460;
+  --color-red: #ce0018;
+  --color-editor-chrome: #2e2e2e;
+
+  /* Syntax highlighting (AboutMe.js editor + terminal) */
+  --syntax-keyword: #569cd6;
+  --syntax-string: #6a9955;
+  --syntax-value: #b5cea8;
+  --syntax-comment: #808080; /* #6a6a6a measured 2.9:1 on #050505 — WCAG AA needs 4.5:1 */
+  --syntax-punct: #d4d4d4;
+
+  /* Type */
+  --font-sans: "Satoshi", "General Sans", "Outfit", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --fs-hero-name: clamp(2.25rem, 5vw + 1rem, 5rem);
+  --fs-hero-title: clamp(1.5rem, 2.5vw + 1rem, 2.75rem);
+  --fs-h1: clamp(2rem, 3vw + 1rem, 3.25rem);
+  --fs-h2: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-micro: 0.75rem;
+
+  /* Space (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Layout */
+  --container-max: 1440px;
+  --container-pad: clamp(1.25rem, 4vw, 4rem);
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 220ms;
+  --duration-base: 550ms;
+  --duration-slow: 800ms;
+}
+
+/* prefers-reduced-motion turns every duration to ~0 in one place; components
+   that gate on JS still check the media query directly before starting
+   rAF loops, but anything driven purely by CSS transitions is covered here. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 1ms;
+    --duration-base: 1ms;
+    --duration-slow: 1ms;
+  }
+}

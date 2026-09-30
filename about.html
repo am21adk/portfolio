@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Amir Mashallah Ali</title>
+  <meta name="description" content="Programmer and Mobile Developer with a First-Class BSc Computer Science and MSc Cyber Security from the University of Hertfordshire — experience, skills and education.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About — Amir Mashallah Ali">
+  <meta property="og:description" content="Experience, skills and education — from leading the Muslim Student Council's 45+ societies to an MSc in Cyber Security.">
+  <meta property="og:image" content="https://amirmashallahali.dev/assets/og-image.jpg">
+  <meta property="og:url" content="https://amirmashallahali.dev/about">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://amirmashallahali.dev/about">
+  <meta name="theme-color" content="#000000">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link rel="preload" as="style" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,700&f[]=satoshi@400,500,700,900&display=optional">
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+</head>
+<body data-page="about">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header container">
+    <a class="nav-monogram" href="/" aria-label="AMA — Home">
+      <svg viewBox="0 0 100 34" role="img" aria-hidden="true" focusable="false"><text x="0" y="27">AMA</text></svg>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="/">Home</a>
+      <a href="/projects">Projects</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="nav-terminal-toggle" data-open-terminal aria-label="Open terminal (or press the backtick key)">&gt;_</button>
+      <a class="btn-outline" href="/assets/cv.pdf" download>Resume ↓</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container" aria-labelledby="about-heading">
+      <h1 class="visually-hidden" id="about-heading">About Amir Mashallah Ali</h1>
+      <div class="editor" data-reveal>
+        <div class="editor-tabbar">
+          <span class="editor-badge-js">JS</span>
+          <span class="editor-tab">AboutMe.js <span class="editor-tab-close" aria-hidden="true">×</span></span>
+        </div>
+        <div class="editor-body">
+          <div class="editor-gutter" data-editor-gutter aria-hidden="true"></div>
+          <pre class="editor-code" data-editor-code></pre>
+        </div>
+        <div class="editor-run-row">
+          <button type="button" class="editor-run-btn" data-editor-run aria-expanded="false" aria-controls="editor-output">▶ Run</button>
+        </div>
+        <pre class="editor-output" id="editor-output" data-editor-output></pre>
+      </div>
+    </section>
+
+    <section class="container" aria-labelledby="experience-heading">
+      <h2 class="section-heading" id="experience-heading" data-decrypt>Experience</h2>
+      <ol class="git-log" data-git-log></ol>
+    </section>
+
+    <section class="container" aria-labelledby="skills-heading">
+      <div class="skills-heading">
+        <h2 id="skills-heading" data-decrypt>Skills</h2>
+        <span class="eyebrow">I build things, and I know how they break.</span>
+      </div>
+      <div class="marquee-row" aria-hidden="true">
+        <div class="marquee-track" data-marquee-build></div>
+      </div>
+      <div class="marquee-row reverse" aria-hidden="true">
+        <div class="marquee-track" data-marquee-secure></div>
+      </div>
+      <p class="visually-hidden">Skills: JavaScript, TypeScript, React, React Native and more — see the full list in the CV.</p>
+      <div class="skills-controls">
+        <button type="button" class="btn-outline" data-skills-break>Break it</button>
+        <button type="button" class="btn-outline" data-skills-tidy hidden>Tidy up</button>
+      </div>
+      <div class="physics-stage" data-physics-stage aria-hidden="true"></div>
+    </section>
+
+    <section class="container" aria-labelledby="education-heading">
+      <h2 class="section-heading" id="education-heading" data-decrypt>Education and certification</h2>
+      <div class="education-columns" data-education></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <p>© <span data-copyright-year></span> Amir Mashallah Ali</p>
+      <p class="footer-clock" data-london-clock>London — --:--</p>
+      <button type="button" class="footer-headers-link" data-open-headers-panel>Security headers: A+</button>
+    </div>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+  <div class="terminal-overlay" data-terminal role="dialog" aria-modal="true" aria-label="Terminal" hidden></div>
+  <div class="command-palette-backdrop" data-command-palette hidden></div>
+  <div class="headers-panel" data-headers-panel hidden></div>
+  <div class="scroll-progress" data-scroll-progress aria-hidden="true"></div>
+
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
