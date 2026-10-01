@@ -38,7 +38,7 @@ function buildSourceLines(data) {
     `  education: ${arrayLiteral(data.education)},`,
     `  certifications: ${arrayLiteral(data.certifications)},`,
     `  languages: ${arrayLiteral(data.languages)},`,
-    `  currently: ${arrayLiteral(data.currently)},`,
+    `  volunteering: ${arrayLiteral(data.volunteering)},`,
     `  linkedin: ${quote(data.linkedin)},`,
     `  instagram: ${quote(data.instagram)},`,
     "};",

@@ -13,7 +13,7 @@ export const PERSON = {
   name: "Amir Mashallah Ali",
   monogram: "AMA",
   titles: ["Programmer", "Mobile Developer", "Cyber Security MSc"],
-  bio: "I build web and mobile products for real communities, from a national platform for 45+ university societies to the app their members carry in their pocket. First-class BSc Computer Science and MSc Cyber Security, University of Hertfordshire.",
+  bio: "I build web and mobile products for real communities, from a national platform for 45+ university societies to the app their members carry in their pocket. First-class BSc Computer Science and MSc Cyber Security (Merit), University of Hertfordshire.",
   location: "London, UK",
   portrait: "assets/portrait.webp",
   cv: "assets/cv.pdf",
@@ -39,7 +39,7 @@ export const SOCIALS = [
 export const LIVE_STATUS_HOSTS = ["https://www.absoc.uk", "https://www.badrgrappling.co.uk"];
 
 export const STATS = [
-  { value: 2, prefix: "", suffix: "", label: "First-class degrees" },
+  { value: 1, prefix: "", suffix: "", label: "First-class degree" },
   { value: 1, prefix: "", suffix: "st", label: "Place, Accessibility Hackathon — led a team of 8" },
   { value: 45, prefix: "", suffix: "+", label: "Societies overseen nationally" },
   { value: 200, prefix: "", suffix: "+", label: "Attendees at a national event I hosted" },
@@ -357,7 +357,7 @@ export const EDUCATION = [
   {
     id: "msc-cyber-security",
     qualification: "MSc Cyber Security",
-    grade: "First Class",
+    grade: "Merit",
     institution: "University of Hertfordshire",
     electives: ["Cyber Operations", "Responsible Technology", "Information Security and Compliance", "Penetration Testing"],
   },
@@ -381,10 +381,10 @@ export const ABOUT_ME_CODE = {
   name: "Amir Mashallah Ali",
   role: "Programmer & Mobile Developer",
   based: "London, UK",
-  education: ["MSc Cyber Security, First Class", "BSc Computer Science, First-Class Honours"],
+  education: ["MSc Cyber Security, Merit", "BSc Computer Science, First-Class Honours"],
   certifications: ["Google Cybersecurity Certificate"],
   languages: ["JavaScript", "TypeScript", "Python", "Java", "SQL"],
-  currently: ["Vice Chair @ MSC", "Deputy Head of Drivers @ Who Is Hussain?"],
+  volunteering: ["Vice Chair @ MSC", "Deputy Head of Drivers @ Who Is Hussain?"],
   linkedin: "linkedin.com/in/amir-m-ali-",
   instagram: "@amirrr.ma",
 };

@@ -30,6 +30,7 @@ import { init as initLiveStatus } from "./features/live-status.js";
 import { init as initTiltCards } from "./features/tilt-cards.js";
 import { init as initSkillsPhysics } from "./features/skills-physics.js";
 import { init as initArchiveFilter } from "./features/archive-filter.js";
+import { init as initProjectCardExpand } from "./features/project-card-expand.js";
 import { init as initCommandPalette } from "./features/command-palette.js";
 import { init as initTerminal } from "./features/terminal.js";
 import { init as initConsoleEasterEgg } from "./features/console-easter-egg.js";
@@ -91,6 +92,7 @@ initLiveStatus();
 initTiltCards();
 initSkillsPhysics();
 initArchiveFilter();
+initProjectCardExpand();
 
 // Global, page-agnostic features.
 initRevealOnScroll();
