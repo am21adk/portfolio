@@ -35,9 +35,12 @@ export function renderHeroBio(el) {
 
 function statusLineHTML(project) {
   if (project.status === "app") {
+    // Two real stores, two real links — these can't be nested inside the
+    // card's own <a> (invalid HTML, broken click targets), which is why an
+    // app-type card renders without an outer link at all; see below.
     return `<span class="store-badges">
-      <span class="store-badge">${iconSVG("apple", { size: 12 })} iOS</span>
-      <span class="store-badge">${iconSVG("play", { size: 12 })} Android</span>
+      <a class="store-badge" href="${project.appStore}" target="_blank" rel="noopener noreferrer">${iconSVG("apple", { size: 12 })} iOS</a>
+      <a class="store-badge" href="${project.playStore}" target="_blank" rel="noopener noreferrer">${iconSVG("play", { size: 12 })} Android</a>
     </span>`;
   }
   return `<span class="project-card-status" data-live-status data-status-url="${project.statusCheckUrl}">
@@ -59,19 +62,21 @@ function cardInnerHTML(project) {
   `;
 }
 
-/** Home and Projects both use this: each featured card is a plain link
- *  straight to the project itself (its live site, or the App Store for
- *  the app) — no inline expanded view, no toggle. */
+/** Home and Projects both use this: each featured card links straight to
+ *  the project itself — no inline expanded view, no toggle. A website
+ *  card is one link to one site, so the whole card is that <a>. The app
+ *  card has two real destinations (iOS and Android), so it can't be a
+ *  single link — it renders as a plain container instead, and the iOS/
+ *  Android badges inside (see statusLineHTML above) are the actual links. */
 export function renderFeaturedCards(container) {
   if (!container) return;
-  container.innerHTML = FEATURED_PROJECTS.map(
-    (p) => `
-    <li>
-      <a class="project-card color-${p.color}" href="${p.cta.url}" target="_blank" rel="noopener noreferrer" data-card-id="${p.id}" data-reveal>
-        ${cardInnerHTML(p)}
-      </a>
-    </li>`
-  ).join("");
+  container.innerHTML = FEATURED_PROJECTS.map((p) => {
+    const card =
+      p.status === "app"
+        ? `<div class="project-card color-${p.color}" data-card-id="${p.id}" data-reveal>${cardInnerHTML(p)}</div>`
+        : `<a class="project-card color-${p.color}" href="${p.cta.url}" target="_blank" rel="noopener noreferrer" data-card-id="${p.id}" data-reveal>${cardInnerHTML(p)}</a>`;
+    return `<li>${card}</li>`;
+  }).join("");
   // Set programmatically (not via a style="" attribute) so a strict
   // style-src CSP with no 'unsafe-inline' still allows it — CSP governs
   // parsed style attributes, not CSSOM property assignment.

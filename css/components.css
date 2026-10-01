@@ -229,11 +229,18 @@ html.reveal-armed [data-reveal].is-visible {
 
 .store-badges { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 .store-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   font-size: var(--fs-micro);
   border: 1px solid currentColor;
   border-radius: var(--radius-sm);
   padding: 2px 8px;
   opacity: 0.85;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.store-badge:hover, .store-badge:focus-visible {
+  opacity: 1;
 }
 
 .featured-work-footer {

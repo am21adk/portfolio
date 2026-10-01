@@ -1,7 +1,7 @@
 // Feature 6 — encrypted contact details on the Contact page.
 //
 // CONTACT.email/phone (data/content.js) are plain strings in the JS module
-// graph — they have to be, so the mailto composer and terminal `contact`
+// graph — they have to be, so the message composer and terminal `contact`
 // command can use them — but they are never written into HTML as static
 // text. Each button starts showing scrambled glyphs (aria-hidden, so a
 // screen reader doesn't try to read garbage), with its accessible name

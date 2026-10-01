@@ -21,7 +21,7 @@ export const PERSON = {
 
 // Contact details are deliberately NOT stored as plain strings — see
 // js/features/encrypted-contact.js. These are only used by the terminal's
-// `contact` command and the mailto: composer, both of which run in JS,
+// `contact` command and the message composer, both of which run in JS,
 // never printed into page HTML.
 export const CONTACT = {
   email: "amashallahali@gmail.com",
