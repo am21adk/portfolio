@@ -40,12 +40,15 @@ export function init() {
   if (!cards.length) return;
 
   cards.forEach((el) => {
-    // Wrap the trailing text in its own span once, so refresh() has a
-    // stable node to update without touching the dot.
-    const label = document.createElement("span");
-    label.dataset.liveStatusLabel = "";
-    label.textContent = " Live";
-    el.append(label);
+    // The static markup already has this label (a plain "Live" for anyone
+    // without JS); reuse it so refresh() has a stable node to update
+    // without ever producing a second, duplicate "Live".
+    if (!el.querySelector("[data-live-status-label]")) {
+      const label = document.createElement("span");
+      label.dataset.liveStatusLabel = "";
+      label.textContent = " Live";
+      el.append(label);
+    }
   });
 
   const timers = new Map();

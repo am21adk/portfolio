@@ -77,6 +77,11 @@
           <p class="field-error" id="composer-name-error" role="alert"></p>
         </div>
         <div class="field">
+          <label for="composer-email">Your email</label>
+          <input id="composer-email" name="email" type="email" required autocomplete="email">
+          <p class="field-error" id="composer-email-error" role="alert"></p>
+        </div>
+        <div class="field">
           <label for="composer-subject">Subject</label>
           <input id="composer-subject" name="subject" type="text" required>
           <p class="field-error" id="composer-subject-error" role="alert"></p>
@@ -86,7 +91,8 @@
           <textarea id="composer-message" name="message" rows="6" required></textarea>
           <p class="field-error" id="composer-message-error" role="alert"></p>
         </div>
-        <button type="submit" class="btn-solid">Open in email →</button>
+        <button type="submit" class="btn-solid" data-composer-submit>Send message →</button>
+        <p class="field-error" id="composer-form-error" role="alert" aria-live="polite"></p>
       </form>
     </section>
 

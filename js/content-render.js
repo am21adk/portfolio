@@ -41,7 +41,7 @@ function statusLineHTML(project) {
     </span>`;
   }
   return `<span class="project-card-status" data-live-status data-status-url="${project.statusCheckUrl}">
-    <span class="status-dot is-live"></span> Live
+    <span class="status-dot is-live"></span><span data-live-status-label> Live</span>
   </span>`;
 }
 
