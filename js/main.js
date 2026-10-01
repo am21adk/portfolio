@@ -7,8 +7,7 @@
 import {
   renderHeroSocials,
   renderHeroBio,
-  renderFeaturedLinks,
-  renderFeaturedDetails,
+  renderFeaturedCards,
   renderStats,
   renderArchive,
   renderSkillsMarquee,
@@ -30,7 +29,6 @@ import { init as initLiveStatus } from "./features/live-status.js";
 import { init as initTiltCards } from "./features/tilt-cards.js";
 import { init as initSkillsPhysics } from "./features/skills-physics.js";
 import { init as initArchiveFilter } from "./features/archive-filter.js";
-import { init as initProjectCardExpand } from "./features/project-card-expand.js";
 import { init as initCommandPalette } from "./features/command-palette.js";
 import { init as initTerminal } from "./features/terminal.js";
 import { init as initConsoleEasterEgg } from "./features/console-easter-egg.js";
@@ -56,10 +54,10 @@ renderFooterYear(document.querySelector("[data-copyright-year]"));
 
 renderHeroSocials(document.querySelector("[data-hero-socials]"));
 renderHeroBio(document.querySelector("[data-hero-bio]"));
-renderFeaturedLinks(document.querySelector("[data-featured-links]"));
+renderFeaturedCards(document.querySelector("[data-featured-links]"));
 renderStats(document.querySelector("[data-stats]"));
 
-renderFeaturedDetails(document.querySelector("[data-featured-details]"));
+renderFeaturedCards(document.querySelector("[data-featured-details]"));
 renderArchive(
   document.querySelector("[data-archive-grid]"),
   document.querySelector("[data-archive-pills]"),
@@ -70,15 +68,6 @@ renderSkillsMarquee(document.querySelector("[data-marquee-build]"), document.que
 renderEducation(document.querySelector("[data-education]"));
 
 renderContactSocials(document.querySelector("[data-contact-socials]"));
-
-// A card linked from Home (/projects#absoc-website) should land already
-// expanded, not just scrolled to.
-// location.hash already includes its leading "#", which is exactly the ID
-// selector syntax needed here — CSS.escape would instead escape that "#"
-// into a literal character and break the selector, since our project ids
-// are plain kebab-case with nothing that actually needs escaping.
-const targetDetails = location.hash && document.querySelector(`details${location.hash}`);
-if (targetDetails) targetDetails.open = true;
 
 // Content-driven features (need the DOM the render calls above just built).
 initAboutEditor();
@@ -92,7 +81,6 @@ initLiveStatus();
 initTiltCards();
 initSkillsPhysics();
 initArchiveFilter();
-initProjectCardExpand();
 
 // Global, page-agnostic features.
 initRevealOnScroll();

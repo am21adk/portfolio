@@ -59,13 +59,15 @@ function cardInnerHTML(project) {
   `;
 }
 
-/** Home: each card is a plain link to the project's expanded view on Projects. */
-export function renderFeaturedLinks(container) {
+/** Home and Projects both use this: each featured card is a plain link
+ *  straight to the project itself (its live site, or the App Store for
+ *  the app) — no inline expanded view, no toggle. */
+export function renderFeaturedCards(container) {
   if (!container) return;
   container.innerHTML = FEATURED_PROJECTS.map(
     (p) => `
     <li>
-      <a class="project-card color-${p.color}" href="projects.html#${p.id}" data-card-id="${p.id}" data-reveal>
+      <a class="project-card color-${p.color}" href="${p.cta.url}" target="_blank" rel="noopener noreferrer" data-card-id="${p.id}" data-reveal>
         ${cardInnerHTML(p)}
       </a>
     </li>`
@@ -73,36 +75,6 @@ export function renderFeaturedLinks(container) {
   // Set programmatically (not via a style="" attribute) so a strict
   // style-src CSP with no 'unsafe-inline' still allows it — CSP governs
   // parsed style attributes, not CSSOM property assignment.
-  container.querySelectorAll("[data-card-id]").forEach((el) => {
-    el.style.viewTransitionName = `card-${el.dataset.cardId}`;
-  });
-}
-
-/** Projects page: each card is a native <details> — expand/collapse works
- *  with no JS at all; a tiny hash-sync script (see main.js) auto-opens the
- *  one a Home card linked to. */
-export function renderFeaturedDetails(container) {
-  if (!container) return;
-  container.innerHTML = FEATURED_PROJECTS.map((p) => {
-    const cta =
-      p.status === "app"
-        ? `<a class="btn-solid" href="${p.appStore}" target="_blank" rel="noopener noreferrer">${iconSVG("apple", { size: 14 })} App Store</a>
-           <a class="btn-solid" href="${p.playStore}" target="_blank" rel="noopener noreferrer">${iconSVG("play", { size: 14 })} Google Play</a>`
-        : `<a class="btn-solid" href="${p.cta.url}" target="_blank" rel="noopener noreferrer">${p.cta.label} →</a>`;
-
-    return `
-    <details class="project-card color-${p.color}" id="${p.id}" data-card-id="${p.id}" data-reveal>
-      <summary>${cardInnerHTML(p)}</summary>
-      <div class="project-card-expanded">
-        <p>${p.description}</p>
-        <ul>${p.highlights.map((h) => `<li>${h}</li>`).join("")}</ul>
-        <div class="project-card-gallery">
-          ${p.images.map((img) => `<img src="${img.src}" alt="${img.alt}" loading="lazy" width="${img.width}" height="${img.height}">`).join("")}
-        </div>
-        <div class="project-card-cta">${cta}</div>
-      </div>
-    </details>`;
-  }).join("");
   container.querySelectorAll("[data-card-id]").forEach((el) => {
     el.style.viewTransitionName = `card-${el.dataset.cardId}`;
   });
