@@ -1,16 +1,14 @@
 // The message composer on Contact. Validates the fields, then POSTs the
-// message straight to Amir's inbox via FormSubmit (https://formsubmit.co)
-// — a free relay that needs no account or API key: it just emails
-// whatever JSON it receives to the address in the URL. No server of
-// Amir's own to run or pay for, which is the whole point of a static
-// site. The one-time cost: the very first message ever sent to a given
-// address makes FormSubmit email that address an "activate this form"
-// link instead of delivering the message — see the README.
+// message straight to Amir's inbox via Web3Forms (https://web3forms.com)
+// — a free relay keyed by WEB3FORMS_ACCESS_KEY in data/content.js (that
+// key is meant to be public; it just tells Web3Forms which inbox to
+// deliver to). No server of Amir's own to run or pay for, which is the
+// whole point of a static site.
 
-import { CONTACT } from "../../data/content.js";
+import { WEB3FORMS_ACCESS_KEY } from "../../data/content.js";
 import { showToast } from "../lib/toast.js";
 
-const ENDPOINT = `https://formsubmit.co/ajax/${CONTACT.email}`;
+const ENDPOINT = "https://api.web3forms.com/submit";
 
 function validateField(input) {
   const errorEl = document.getElementById(`${input.id}-error`);
@@ -58,9 +56,16 @@ export function init() {
       const res = await fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name, email, _subject: `Portfolio message: ${subject}`, message, _captcha: "false" }),
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name,
+          email,
+          subject: `Portfolio message: ${subject}`,
+          message,
+        }),
       });
-      if (!res.ok) throw new Error(`FormSubmit responded ${res.status}`);
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || `Web3Forms responded ${res.status}`);
 
       showToast("Message sent");
       form.reset();

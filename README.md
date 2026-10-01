@@ -3,38 +3,40 @@
 A four-page static site (Home, Projects, About, Contact) built in vanilla HTML,
 CSS and JavaScript (ES modules) — no framework, no build step, no animation,
 physics, syntax-highlighting or fuzzy-search library. Every one of those is
-hand-written in `js/lib/` or `js/features/`. Deploys as-is to Cloudflare
-Pages.
+hand-written in `js/lib/` or `js/features/`. All internal links and asset
+paths are relative filenames (`about.html`, `assets/cv.pdf`, …), not
+root-absolute (`/about`), so the site works unmodified from a plain static
+server, from `file://`, or from a subpath like GitHub Pages' own
+`username.github.io/repo-name/` — nothing assumes it's living at a domain
+root.
 
 ## Before you deploy
 
-The domain `https://amirmashallahali.dev` is a **placeholder**, used in every
-page's `<link rel="canonical">` and `<meta property="og:*">` tag, plus
-`robots.txt`, `sitemap.xml` and `.well-known/security.txt`. Find-and-replace
-it with your real domain (or Cloudflare's `*.pages.dev` address, if you're
-not attaching a custom domain) before going live — search-engine and social
-previews will otherwise point at a domain nobody owns.
+The domain `https://amirmashallahali.dev` is a **placeholder**, used only in
+the few places an absolute URL is actually required: every page's `<link
+rel="canonical">` and `<meta property="og:*">` tags (social-media previews
+need a real, absolute URL to fetch), plus `robots.txt`, `sitemap.xml` and
+`.well-known/security.txt`. Find-and-replace it with your real domain before
+going live, or those will point at a domain nobody owns. Everything else
+(nav, assets, scripts) already just works at whatever URL you deploy to.
 
 ## Running it locally
 
-No build step — it's just files. Any static file server works:
-
-```
-python -m http.server 8080    # then open http://localhost:8080/index.html
-# or
-npx serve .
-```
-
-One thing a plain static server *won't* do that Cloudflare Pages does
-automatically: serve `about.html` at the clean URL `/about`. Locally, use the
-`.html` filenames directly; the nav's `/about`-style links will 404 until
-deployed (or until you use a dev server that rewrites clean URLs).
+No build step — it's just files. Any static file server works, e.g.
+`python -m http.server 8080` then open `http://localhost:8080/index.html`.
 
 ## Deploying
 
-Push to a Git repo and connect it to Cloudflare Pages (framework preset:
-"None", build command: none, output directory: `/`). Cloudflare reads
-`_headers` automatically and applies the security headers to every response.
+This repo is currently deployed to **GitHub Pages**
+(`am21adk.github.io/portfolio/`) — push to `main` and GitHub rebuilds it
+automatically (check progress with `gh api repos/<owner>/<repo>/pages/builds/latest`).
+One real limitation of GitHub Pages: **it does not read the `_headers`
+file**, so the CSP and other security headers documented below are not
+actually being served on the live site right now — GitHub Pages has no
+mechanism for custom response headers at all. If the securityheaders.com
+grade matters, move hosting to Cloudflare Pages or Netlify, both of which
+read `_headers` automatically (Cloudflare: framework preset "None", build
+command none, output directory `/`) with no other changes needed.
 
 ## Editing your content
 
@@ -56,8 +58,10 @@ from it at load time. A few pointers:
 - **Update the AboutMe.js editor**: edit `ABOUT_ME_CODE` — it's rendered
   literally as the `const amir = {...}` object you see typed out on About.
 - Email/phone live in `CONTACT` as plain strings (they have to be, for the
-  mailto composer and terminal to use) but are **never** written into any
+  message composer and terminal to use) but are **never** written into any
   page's HTML — see "Encrypted contact details" below.
+- `WEB3FORMS_ACCESS_KEY` (next to `CONTACT`) is what actually delivers the
+  Contact page's message composer — see that feature's entry below.
 
 Nothing in `css/` or `js/` needs to change for any of the above.
 
@@ -103,15 +107,26 @@ assets/
 
 ## Every feature, and how it works
 
+**Featured project cards** (Home + Projects, `renderFeaturedCards` in
+`content-render.js`). Each card links straight to the project itself — the
+live site for the two websites, opening in a new tab. The app card is the
+one exception: it has two real destinations (iOS and Android), so it can't
+be a single link (and can't nest one inside another), so it renders as a
+plain container with the iOS/Android badges themselves as the two links.
+There's no inline expanded view or click-to-toggle; what you see is what
+there is.
+
 **Page transitions.** Pure CSS: `@view-transition { navigation: auto; }` in
 `layout.css` opts every page into the browser's native cross-document View
 Transitions API. The header and footer each get their own
 `view-transition-name`, so their (identical) content crossfades onto itself
 — visually indistinguishable from staying put. Each featured project card
-gets a unique `view-transition-name` set via the CSSOM in
-`content-render.js`, so clicking a card on Home morphs into its place on
-Projects. Browsers without support (anything not Chromium-based, currently)
-just navigate normally — there's no JS and no polyfill to fail.
+also gets a unique `view-transition-name` (set via the CSSOM in
+`content-render.js`), so navigating from Home to Projects via the nav bar
+morphs each card into its matching one rather than crossfading the whole
+page — a card's own click goes straight to the external project, bypassing
+this entirely. Browsers without support (anything not Chromium-based,
+currently) just navigate normally — there's no JS and no polyfill to fail.
 
 **AboutMe.js editor** (`features/about-editor.js`). Builds a real
 `const amir = {...}` object as source text from `ABOUT_ME_CODE`, tokenises
@@ -143,10 +158,19 @@ with the mid-scramble visible text.
 
 **Encrypted contact details** (`features/encrypted-contact.js`, Contact
 page). Email and phone are plain strings in `CONTACT` (they have to be, for
-the mailto composer and the terminal's `contact` command) but are **never**
+the message composer and the terminal's `contact` command) but are **never**
 written into any page's static HTML. Each button starts as scrambled
 glyphs; hover, focus or tap decrypts them via the same effect as the
 headings. A static-HTML scraper or view-source never sees either value.
+
+**Message composer** (`features/contact-composer.js`, Contact page).
+Validates the name/email/subject/message fields, then POSTs the message
+directly to `CONTACT.email` via [Web3Forms](https://web3forms.com) — no
+mail client opens, no server of Amir's own, just a `fetch()` to a free
+relay keyed by `WEB3FORMS_ACCESS_KEY` in `content.js` (that key is meant to
+be public — it only tells Web3Forms which inbox to deliver to). Shows a
+"Message sent" toast on success, an inline error with a direct-email
+fallback if the request fails.
 
 **Experience git log** (`features/git-log.js`, About page). Each
 `EXPERIENCE` entry becomes a commit with a real, truncated SHA-1 hash of its
@@ -217,15 +241,15 @@ typed, styled as a failed shell command, via `location.pathname` —
   `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'` (plus
   `X-Frame-Options: DENY` for older UAs), and same-origin
   `Cross-Origin-Opener-Policy`/`Cross-Origin-Resource-Policy`.
-- `connect-src` only allows `'self'` plus the two live-status hosts
+- `connect-src` only allows `'self'`, the two live-status hosts
   (`LIVE_STATUS_HOSTS` in `content.js` — keep the two in sync if you add a
-  fourth featured project with its own live-status check).
+  fourth featured project with its own live-status check), and
+  `api.web3forms.com` for the message composer.
 - `.well-known/security.txt` per RFC 9116.
 
 Run [securityheaders.com](https://securityheaders.com) against your real
-deployed URL once it's live — the grade depends on Cloudflare actually
-serving `_headers` as configured, which I can't verify without a real
-deployment.
+deployed URL once `_headers` is actually being served (see "Deploying"
+above — not the case on GitHub Pages as currently hosted).
 
 ## Performance, accessibility and the honest caveats
 
@@ -252,24 +276,21 @@ several real issues along the way:
   may creep back up — the fix is to bump the relevant `min-height`, not to
   remove it.
 
-**What I couldn't verify**: everything above was measured against a local
-Python dev server, not the real Cloudflare Pages CDN — production will have
-a very different (almost certainly better) network profile. Re-run
-Lighthouse against the live URL once deployed and treat these numbers as a
-baseline, not a guarantee. I also didn't get a real browser open during
-this build (the Chrome extension bridge wasn't connected in this session),
-so nothing here has been eyeballed by a human yet — do a visual pass
-yourself before calling it finished, especially the portrait's background
-removal (done locally with `rembg`, not reviewed) and crop position.
+**What hasn't been re-verified since**: the Lighthouse numbers above were
+measured against a local Python dev server, before several later rounds of
+changes (card-expansion removal, the Web3Forms switch, header/nav sizing).
+Re-run Lighthouse against the live URL — both because hosting changes
+performance characteristics, and because nothing's re-measured the page
+weight/layout-shift impact of what's changed since.
 
 ## Known follow-ups
 
 - `assets/og-image.jpg`, the favicons and `apple-touch-icon.png` are
   generated programmatically (Pillow + the real Satoshi Black font) — clean
   and on-brand, but a designed version would likely look better.
-- The portrait's background removal used a local, unsupervised ML model
-  (`rembg`/u2net). Check the edges — hair and fine detail are the usual
-  weak point for this kind of tool.
 - `assets/side profile.JPG` in the project folder is unused source material
   (not referenced anywhere) — kept in case you want to swap the hero photo
   later.
+- The contact composer depends on `api.web3forms.com` staying up and the
+  access key staying valid — if messages stop arriving, check
+  web3forms.com first before assuming the site broke.

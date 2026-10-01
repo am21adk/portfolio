@@ -28,6 +28,13 @@ export const CONTACT = {
   phone: "+44 7464 068557",
 };
 
+// Web3Forms (web3forms.com) delivers the Contact page's message composer
+// to CONTACT.email above — see js/features/contact-composer.js. This key
+// is meant to be public: it's how Web3Forms knows which inbox to deliver
+// to, not a secret that grants access to anything. Get a new one (free,
+// no account, instant) at web3forms.com if this ever needs rotating.
+export const WEB3FORMS_ACCESS_KEY = "09c5cdb9-8b02-47d2-ac00-f5294a4bb410";
+
 export const SOCIALS = [
   { name: "LinkedIn", url: "https://www.linkedin.com/in/amir-m-ali-", icon: "linkedin" },
   { name: "GitHub", url: "https://github.com/am21adk", icon: "github" },
