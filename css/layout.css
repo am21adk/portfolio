@@ -68,7 +68,7 @@
 .nav-links {
   display: flex;
   gap: var(--space-8);
-  font-size: var(--fs-small);
+  font-size: var(--fs-body);
 }
 .nav-links a {
   color: var(--color-fg-muted);
